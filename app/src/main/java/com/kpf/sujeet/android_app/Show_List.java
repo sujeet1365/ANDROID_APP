@@ -2,10 +2,16 @@ package com.kpf.sujeet.android_app;
 
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -13,7 +19,7 @@ import android.view.ViewGroup;
  */
 public class Show_List extends Fragment {
 
-
+    ListView list;
     public Show_List() {
         // Required empty public constructor
     }
@@ -23,7 +29,29 @@ public class Show_List extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_show__list, container, false);
+        View view = inflater.inflate(R.layout.fragment_show__list, container, false);
+
+        list = (ListView)view.findViewById(R.id.clicked_image);
+        ArrayList<String> array = new ArrayList<String>();
+
+        File file = new File(Environment.getExternalStorageDirectory(),File.separator+"Pictures/MyCameraApp");
+        File file_A[] = file.listFiles();
+
+        for (int i = 0; i < file_A.length; i++)
+        {
+            String str = file_A[i].toString();
+            int a=str.lastIndexOf("/")+1;
+            int b=str.length();
+            str=str.substring(a,b);
+            array.add(str);
+        }
+
+
+        ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,array);
+        list.setAdapter(adapter);
+
+
+        return view;
     }
 
 }

@@ -2,6 +2,7 @@ package com.kpf.sujeet.android_app;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class Action extends Fragment {
 
     View view;
     String name,age,address,gender;
+    AlertDialog.Builder alertDialog;
 
 
     public Action() {
@@ -86,7 +88,7 @@ public class Action extends Fragment {
     public void fill_info()
     {
 
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("User Details");
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.user_details, null);
@@ -94,8 +96,9 @@ public class Action extends Fragment {
         final EditText edt_age = (EditText)dialogView.findViewById(R.id.edt_age);
         final EditText edt_add = (EditText)dialogView.findViewById(R.id.edt_address);
         final EditText edt_gend = (EditText)dialogView.findViewById(R.id.edt_gender);
-        Button btn_submit = (Button)dialogView.findViewById(R.id.btn_submit);
         alertDialog.setView(dialogView);
+        Button btn_submit = (Button)dialogView.findViewById(R.id.btn_submit);
+
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +107,6 @@ public class Action extends Fragment {
                 age = edt_age.getText().toString().trim();
                 address = edt_add.getText().toString().trim();
                 gender = edt_gend.getText().toString().trim();
-
 
                 File root = android.os.Environment.getExternalStorageDirectory();
 
@@ -129,6 +131,8 @@ public class Action extends Fragment {
                     e.printStackTrace();
                 }
 
+                startActivity(new Intent(getActivity(),Reset.class));
+
             }
         });
 
@@ -136,6 +140,7 @@ public class Action extends Fragment {
         alertDialog.show();
 
     }
+
 
     private Camera checkDeviceCamera() {
         Camera mCamera = null;
