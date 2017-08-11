@@ -20,11 +20,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Context.MODE_APPEND;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -102,21 +105,30 @@ public class Action extends Fragment {
                 address = edt_add.getText().toString().trim();
                 gender = edt_gend.getText().toString().trim();
 
+
+                File root = android.os.Environment.getExternalStorageDirectory();
+
+                File dir = new File (root.getAbsolutePath() + "/download");
+                dir.mkdirs();
+                File file = new File(dir, name+".txt");
+
                 try {
-                    FileOutputStream fileout=getActivity().openFileOutput("abc.txt", MODE_PRIVATE);
-                    OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
-                    outputWriter.write(name);
-                    outputWriter.write(age);
-                    outputWriter.write(address);
-                    outputWriter.write(gender);
-                    outputWriter.close();
-
-                    Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
-
-                } catch (Exception e) {
+                    FileOutputStream f = new FileOutputStream(file);
+                    PrintWriter pw = new PrintWriter(f);
+                    pw.println(name);
+                    pw.println(age);
+                    pw.println(address);
+                    pw.println(gender);
+                    pw.flush();
+                    pw.close();
+                    f.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Log.i("", " File not found. Did you");
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                
+
             }
         });
 
