@@ -1,24 +1,31 @@
 package com.kpf.sujeet.android_app;
 
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -31,6 +38,11 @@ public class Action extends Fragment {
     private CameraSurfaceView mSurfaceView;
     public static final int MEDIA_TYPE_IMAGE = 1;
 
+    public static Boolean b=true;
+
+    View view;
+    String name,age,address,gender;
+
 
     public Action() {
         // Required empty public constructor
@@ -41,28 +53,76 @@ public class Action extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_action, container, false);
+        view = inflater.inflate(R.layout.fragment_action, container, false);
 
 
-        FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
-        //preview.addView(mSurfaceView);
-//        clicked_image = (ImageView) findViewById(R.id.clicked_image);
-
-        mCamera = checkDeviceCamera();
-        mSurfaceView = new CameraSurfaceView(getContext(), mCamera);
-        preview.addView(mSurfaceView);
 
         btn_click = (Button) view.findViewById(R.id.btn_click);
         btn_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCamera.takePicture(null, null, mPicture);
-
+                if(b) {
+                    FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
+                    mCamera = checkDeviceCamera();
+                    mSurfaceView = new CameraSurfaceView(getContext(), mCamera);
+                    preview.addView(mSurfaceView);
+                    b=false;
+                }else {
+                    mCamera.takePicture(null, null, mPicture);
+                    fill_info();
+                    b=true;
+                }
             }
         });
 
 
+
         return view;
+    }
+
+    public void fill_info()
+    {
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("User Details");
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.user_details, null);
+        final EditText edt_name = (EditText)dialogView.findViewById(R.id.edt_name);
+        final EditText edt_age = (EditText)dialogView.findViewById(R.id.edt_age);
+        final EditText edt_add = (EditText)dialogView.findViewById(R.id.edt_address);
+        final EditText edt_gend = (EditText)dialogView.findViewById(R.id.edt_gender);
+        Button btn_submit = (Button)dialogView.findViewById(R.id.btn_submit);
+        alertDialog.setView(dialogView);
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                name = edt_name.getText().toString().trim();
+                age = edt_age.getText().toString().trim();
+                address = edt_add.getText().toString().trim();
+                gender = edt_gend.getText().toString().trim();
+
+                try {
+                    FileOutputStream fileout=getActivity().openFileOutput("abc.txt", MODE_PRIVATE);
+                    OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
+                    outputWriter.write(name);
+                    outputWriter.write(age);
+                    outputWriter.write(address);
+                    outputWriter.write(gender);
+                    outputWriter.close();
+
+                    Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+            }
+        });
+
+        alertDialog.create();
+        alertDialog.show();
+
     }
 
     private Camera checkDeviceCamera() {
@@ -119,7 +179,7 @@ public class Action extends Fragment {
                 return null;
             }
         }
-        
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
