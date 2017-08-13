@@ -22,4 +22,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pager_adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

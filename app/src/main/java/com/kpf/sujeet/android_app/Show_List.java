@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.SortedMap;
 
 
 /**
@@ -35,20 +37,24 @@ public class Show_List extends Fragment {
         ArrayList<String> array = new ArrayList<String>();
 
         File file = new File(Environment.getExternalStorageDirectory(),File.separator+"Pictures/MyCameraApp");
-        File file_A[] = file.listFiles();
+        if(file.exists()) {
+            File file_A[] = file.listFiles();
 
-        for (int i = 0; i < file_A.length; i++)
-        {
-            String str = file_A[i].toString();
-            int a=str.lastIndexOf("/")+1;
-            int b=str.length();
-            str=str.substring(a,b);
-            array.add(str);
+            for (int i = 0; i < file_A.length; i++) {
+                String str = file_A[i].toString();
+                int a = str.lastIndexOf("/") + 1;
+                int b = str.length();
+                str = str.substring(a, b);
+                array.add(str);
+            }
         }
 
+            if (array.isEmpty()) {
+                array.add("File Not Found");
+            }
+            ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, array);
+            list.setAdapter(adapter);
 
-        ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,array);
-        list.setAdapter(adapter);
 
 
         return view;

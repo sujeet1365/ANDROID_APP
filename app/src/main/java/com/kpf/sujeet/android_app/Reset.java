@@ -20,6 +20,7 @@ public class Reset extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Reset.this,MainActivity.class));
+                finish();
             }
         });
     }

@@ -42,7 +42,7 @@ public class Action extends Fragment {
     private CameraSurfaceView mSurfaceView;
     public static final int MEDIA_TYPE_IMAGE = 1;
 
-    public static Boolean b=true;
+    Boolean b=true;
 
     View view;
     String name,age,address,gender;
@@ -75,7 +75,6 @@ public class Action extends Fragment {
                 }else {
                     mCamera.takePicture(null, null, mPicture);
                     fill_info();
-                    b=true;
                 }
             }
         });
@@ -108,32 +107,49 @@ public class Action extends Fragment {
                 address = edt_add.getText().toString().trim();
                 gender = edt_gend.getText().toString().trim();
 
-                File root = android.os.Environment.getExternalStorageDirectory();
+                if(name.equals(""))
+                    edt_name.setError("Empty");
+                else if(age.equals(""))
+                    edt_age.setError("Empty");
+                else if(address.equals(""))
+                    edt_add.setError("Empty");
+                else if(gender.equals(""))
+                    edt_gend.setError("Empty");
+                else
+                {
+                    File root = android.os.Environment.getExternalStorageDirectory();
 
-                File dir = new File (root.getAbsolutePath() + "/download");
-                dir.mkdirs();
-                File file = new File(dir, name+".txt");
+                    File dir = new File (root.getAbsolutePath() + "/download");
+                    dir.mkdirs();
+                    File file = new File(dir, name+".txt");
 
-                try {
-                    FileOutputStream f = new FileOutputStream(file);
-                    PrintWriter pw = new PrintWriter(f);
-                    pw.println(name);
-                    pw.println(age);
-                    pw.println(address);
-                    pw.println(gender);
-                    pw.flush();
-                    pw.close();
-                    f.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Log.i("", " File not found. Did you");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        FileOutputStream f = new FileOutputStream(file);
+                        PrintWriter pw = new PrintWriter(f);
+                        pw.print("a. Name :");
+                        pw.println(name);
+                        pw.print("b. Age :");
+                        pw.println(age);
+                        pw.print("c. Address :");
+                        pw.println(address);
+                        pw.print("d. Gender :");
+                        pw.println(gender);
+                        pw.flush();
+                        pw.close();
+                        f.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Log.i("", " File not found. Did you");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    startActivity(new Intent(getActivity(),Reset.class));
+
+                }
                 }
 
-                startActivity(new Intent(getActivity(),Reset.class));
 
-            }
         });
 
         alertDialog.create();
