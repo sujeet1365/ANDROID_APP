@@ -69,6 +69,7 @@ public class Action extends Fragment {
                 if(b) {
                     FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
                     mCamera = checkDeviceCamera();
+//Integrating  camera view through surface view
                     mSurfaceView = new CameraSurfaceView(getContext(), mCamera);
                     preview.addView(mSurfaceView);
                     b=false;
@@ -87,6 +88,7 @@ public class Action extends Fragment {
     public void fill_info()
     {
 
+        // Creating Alert Dialog for filling user details
         alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("User Details");
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -117,6 +119,7 @@ public class Action extends Fragment {
                     edt_gend.setError("Empty");
                 else
                 {
+                    //Storing Path of internal storage in File object
                     File root = android.os.Environment.getExternalStorageDirectory();
 
                     File dir = new File (root.getAbsolutePath() + "/download");
@@ -124,6 +127,7 @@ public class Action extends Fragment {
                     File file = new File(dir, name+".txt");
 
                     try {
+            // Creation and writing the txt file in internal storage
                         FileOutputStream f = new FileOutputStream(file);
                         PrintWriter pw = new PrintWriter(f);
                         pw.print("a. Name :");
@@ -157,7 +161,7 @@ public class Action extends Fragment {
 
     }
 
-
+//checking the presence of camera in user's phone
     private Camera checkDeviceCamera() {
         Camera mCamera = null;
         try {
@@ -167,7 +171,7 @@ public class Action extends Fragment {
         }
         return mCamera;
     }
-
+//Capturing the image and saving it to internal storage
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
@@ -212,7 +216,7 @@ public class Action extends Fragment {
                 return null;
             }
         }
-
+//passing time stamp for reducing redundency in file names
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {

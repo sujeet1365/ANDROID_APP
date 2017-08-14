@@ -14,7 +14,7 @@ public class Reset extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
-
+//calling reset button to direct the user to homeScreen
         btn_reset = (Button)findViewById(R.id.btn_reset);
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override

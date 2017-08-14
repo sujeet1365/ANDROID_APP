@@ -32,14 +32,19 @@ public class Show_List extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_show__list, container, false);
-
+//Creating a listView to show the image list
         list = (ListView)view.findViewById(R.id.clicked_image);
         ArrayList<String> array = new ArrayList<String>();
 
-        File file = new File(Environment.getExternalStorageDirectory(),File.separator+"Pictures/MyCameraApp");
-        if(file.exists()) {
-            File file_A[] = file.listFiles();
+        //getting the path of internal storage where images are stored
 
+        File file = new File(Environment.getExternalStorageDirectory(),File.separator+"Pictures/MyCameraApp");
+
+        //checking for null value if no images are saved in internal storage
+        if(file.exists()) {
+            //creating an array of files
+            File file_A[] = file.listFiles();
+//converting each file into string format and extracting the image name only and storing it into an arraylist
             for (int i = 0; i < file_A.length; i++) {
                 String str = file_A[i].toString();
                 int a = str.lastIndexOf("/") + 1;
@@ -48,10 +53,11 @@ public class Show_List extends Fragment {
                 array.add(str);
             }
         }
-
+//if there are no items in list then passing string message
             if (array.isEmpty()) {
                 array.add("File Not Found");
             }
+        //now with the help of ArrayAdapter setting the ArrayList to ListView
             ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, array);
             list.setAdapter(adapter);
 

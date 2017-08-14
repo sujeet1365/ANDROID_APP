@@ -1,5 +1,9 @@
 package com.kpf.sujeet.android_app;
 
+//        GraphView is a library for Android to programmatically create
+//        flexible and nice-looking diagrams.
+//        For creating this graph I needed a Helper class and added 'com.jjoe64:graphview:4.2.1' into app gradle
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;

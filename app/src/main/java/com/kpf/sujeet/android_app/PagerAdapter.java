@@ -16,6 +16,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
+        //according to position setting the fragments
         switch (position){
             case 0:
                 return new Action();
@@ -30,7 +31,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
-
+//for swaping the titles
     @Override
     public CharSequence getPageTitle(int position) {
         return tabtitles[position];

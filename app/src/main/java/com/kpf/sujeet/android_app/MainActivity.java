@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         tabLayout = (TabLayout)findViewById(R.id.tablayout);
 
+// Setting fragments to tablayout using view pager through PagerAdapter
         PagerAdapter pager_adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pager_adapter);
         tabLayout.setupWithViewPager(viewPager);
